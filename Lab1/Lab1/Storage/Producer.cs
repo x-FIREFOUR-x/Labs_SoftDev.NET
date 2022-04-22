@@ -6,19 +6,12 @@ namespace Lab1
 {
     class Producer
     {
-        private string Name { get; set; }       // ім'я виробника
-        private string Country { get; set; }
-
-        public Producer() { }
-        public Producer(string name, string country) 
-        {
-            Name = name;
-            Country = country;
-        }
+        public string Name { get; set; }       // ім'я виробника
+        public string Country { get; set; }
 
         public override string ToString()
         {
-            return string.Format(@"Виробник: Назва ""{0}"" Країна ""{1}""",  Name, Country);
+            return string.Format(@"{0} {1}",  Name, Country);
         }
     }
 }

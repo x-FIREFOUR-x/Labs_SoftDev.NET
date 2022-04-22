@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace Lab1
 {
     class NameProduct
     {
-        private string Name { get; set; }          // Найменування товару
-        private string NameProducer { get; set; }    // Ім'я виробника
-
-        public NameProduct() { }
-
-        public NameProduct(string name, string nameProducer) 
-        {
-            Name = name;
-            NameProducer = nameProducer;
-        }
+        public string Name { get; set; }          // Найменування товару
+        public Producer Producer { get; set; }    // Ім'я виробника
+        public ICollection<Product> Products { get; set; } = new List<Product>();       //партії товару 
 
         public override string ToString()
         {
-            return string.Format(@"Найменування: ""{0}"" Виробник: ""{1}""", Name, NameProducer);
+            string products = string.Join(" ", Products);
+            return string.Format(@"Найменування: ""{0}"" Виробник: ""{1}"" Партії: {2}", Name, Producer, products);
         }
     }
 }
