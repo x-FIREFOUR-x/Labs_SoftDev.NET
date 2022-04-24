@@ -43,40 +43,51 @@ namespace Lab1
                         // 1. Партії одного найменування товару 
             var products = from t in nameProduct1.Products
                            select t;
+            PrintLINQ(products);
 
             var products2 = nameProduct1.Products.Select(t => t);
+            PrintLINQ(products2);
 
 
                         //2. Дати привезення партій одного найменування товару
             var dates = from t in nameProduct1.Products
                            select t.DateArrival;
+            PrintLINQ(dates);
 
             var dates2 = nameProduct1.Products.Select(t => t.DateArrival);
+            PrintLINQ(dates2);
 
 
                         //3. Характеристики партій одного найменування товару
             var charactProduct = from t in nameProduct1.Products
                                   select new { t.Code, t.Number, t.Weight };
+            PrintLINQ(charactProduct);
 
             var charactProduct2 = nameProduct1.Products
                 .Select(t => new { t.Code, t.Number, t.Weight });
+            PrintLINQ(charactProduct2);
 
 
                         //4. Партії одного найменування продукту вага який більше 20
             var produc = nameProduct2.Products.Where(t => t.Weight > 20);
+            PrintLINQ(produc);
 
             var produc2 = from t in nameProduct2.Products
                           where t.Weight > 20
                           select t;
+            PrintLINQ(produc2);
 
 
                         //5. Відсортовані за алфавітом найменування продуктів 
             var sortedNameProduct = Storage.OrderBy(t => t.Name)
                 .Select(t => new { t.Name, t.Producer});
+            PrintLINQ(sortedNameProduct);
 
             var sortedNameProduct2 = from t in Storage
                                      orderby (t.Name)
                                      select new { t.Name, t.Producer };
+            PrintLINQ(sortedNameProduct2);
+
 
                         //6.  Найменування продуктів виробник яких починається на B відсортовані за алфавітом по виробнику і додатково за алфавітом назви продукту
             var sortedNameProducts = Storage
@@ -84,17 +95,20 @@ namespace Lab1
                 .OrderBy(t => t.Producer.Name)
                 .ThenBy(t => t.Name)
                 .Select(t => new { t.Name, t.Producer });
+            PrintLINQ(sortedNameProducts);
 
             var sortedNameProducts2 = from t in Storage
                 where (t.Producer.Name.ToUpper().StartsWith("B"))
                 orderby (t.Name)
                 orderby (t.Producer.Name)
                 select new { t.Name, t.Producer };
+            PrintLINQ(sortedNameProducts2);
 
 
                         //7. Перших два найменування товару
             var twoFirstNameProducts = Storage
                 .Take(2);
+            PrintLINQ(twoFirstNameProducts);
 
 
                         //8. Максимальна кількість товарів в партії серед партій одного найменування товару
@@ -105,16 +119,19 @@ namespace Lab1
                         //9. Пропустити всі партії одного найменування продукту після партії задовольняючої умову
             var limitedProducts = nameProduct2.Products
                 .SkipWhile(t => DateTime.Parse(t.DateArrival).Month == DateTime.Now.Month );
+            PrintLINQ(limitedProducts);
 
 
                         //10. Партії продуктів вироблені виробником країна якаго співпадає з певним шаблоном
             var specificProducer = Storage
                 .Where(t => Regex.IsMatch(t.Producer.Country, @"[Ss]p"));
+            PrintLINQ(specificProducer);
 
 
                         //11. Кількість постачаємих товарів кожним виробником
             var groupedProducer = Storage.GroupBy(t => t.Producer)
             .Select(t => new { Name = t.Key, Count = t.Count()});
+            PrintLINQ(groupedProducer);
 
             var groupedProducer2 =
                 from t in Storage
@@ -124,6 +141,7 @@ namespace Lab1
             {
                 throw new ArgumentNullException(nameof(groupedProducer2));
             }
+            PrintLINQ(groupedProducer2);
 
 
                         //12. Список товар і його виробник
@@ -131,36 +149,45 @@ namespace Lab1
                 from t in Storage
                 join a in producers on t.Producer equals a
                 select new { Productname = t.Name, Producer = a.Name };
+            PrintLINQ(ListProductProducer);
 
 
                         //13. Обєднати колекції(партії товару) listProduct1 & listProduct2
             var unitedlistProduct = listProduct1.Union(listProduct2);
+            PrintLINQ(unitedlistProduct);
 
             var unitedlistProduct2 = from listProduct in listProduct1.Union(listProduct2)
                                         select listProduct;
+            PrintLINQ(unitedlistProduct2);
 
 
                         //14. Отримати колекцію пересікання(спільних елементів) колекціій producers & producers2
             var intersectedProducers = producers.Intersect(producers2);
+            PrintLINQ(intersectedProducers);
 
             var intersectedProducers2 = from producers_ in producers.Intersect(producers2)
                                         select producers_;
+            PrintLINQ(intersectedProducers2);
 
 
                         //15. Отримати колекцію різних елементів колекцій producers & producers2
             var exceptedProducers = producers.Except(producers2);
+            PrintLINQ(exceptedProducers);
 
             var exceptedProducers2 = from producers_ in producers.Except(producers2)
                                         select producers_;
+            PrintLINQ(exceptedProducers2);
+        }
 
 
-            foreach (var item in exceptedProducers)
+        private static void PrintLINQ<T>(IEnumerable<T> list)
+        {
+            Console.WriteLine("--------------------------");
+            foreach (T value in list)
             {
-                Console.WriteLine(item.ToString());
+                Console.WriteLine(value);
             }
             Console.WriteLine();
-
-
         }
     }
 }
