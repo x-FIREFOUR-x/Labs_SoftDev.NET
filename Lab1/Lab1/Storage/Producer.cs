@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Lab1
+﻿namespace Lab1
 {
     class Producer
     {
         public string Name { get; set; }       // ім'я виробника
-        public string Country { get; set; }
+        public string Country { get; set; }    //країна розташування виробника
 
         public override string ToString()
         {
