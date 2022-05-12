@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Lab2
 {
@@ -94,6 +95,8 @@ namespace Lab2
             XmlDocument doc = new XmlDocument();
             doc.Load("Storage.xml");
 
+            var format = new NumberFormatInfo() { NumberDecimalSeparator = ".", };
+
             foreach (XmlNode node in doc.DocumentElement)
             {
                 string name = node["Name"].InnerText;
@@ -105,9 +108,9 @@ namespace Lab2
                 Console.WriteLine(string.Format("Name Product = {0}\nProducer = {1}, Country = {2}",
                    name, nameProducer, countryProducer));
 
-                foreach(XmlNode pnode in node["Products"])
+                foreach (XmlNode pnode in node["Products"])
                 {
-                    var format = new NumberFormatInfo(){NumberDecimalSeparator = ".",};
+                    
 
                     string code = pnode["Code"].InnerText;
                     double price = Double.Parse(pnode["Price"].InnerText, format);
@@ -120,6 +123,235 @@ namespace Lab2
                 }
                 Console.WriteLine();
             }
+
+
+
+
+            XDocument xmlDoc = XDocument.Load("Storage.xml");
+
+                //1. Всі партії
+            var products =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                select new
+                {
+                    Code = xe.Element("Code").Value,
+                    Price = Double.Parse(xe.Element("Price").Value, format),
+                    Number = Int32.Parse(xe.Element("Number").Value),
+                    Date = xe.Element("DateArrival").Value,
+                    Weight = Double.Parse(xe.Element("Weight").Value, format)
+                };
+            PrintLINQ(products);
+
+
+                //2. Всі Партії найменування Meat
+            var products2 = 
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                where xe.Parent.Parent.Element("Name").Value == "Meat"
+                select new
+                {
+                    Code = xe.Element("Code").Value,
+                    Price = Double.Parse(xe.Element("Price").Value, format),
+                    Number = Int32.Parse(xe.Element("Number").Value),
+                    Date = xe.Element("DateArrival").Value,
+                    Weight = Double.Parse(xe.Element("Weight").Value, format)
+                };
+                PrintLINQ(products2);
+
+
+                //3. Партії ціни яких більше 150
+            var items =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                where Double.Parse(xe.Element("Price").Value, format) > 150
+                select new
+                {
+                    Code = xe.Element("Code").Value,
+                    Price = Double.Parse(xe.Element("Price").Value, format),
+                    Number = Int32.Parse(xe.Element("Number").Value),
+                    Date = xe.Element("DateArrival").Value,
+                    Weight = Double.Parse(xe.Element("Weight").Value, format)
+                };
+            PrintLINQ(items);
+
+
+                //4. Дати всіх партій найменування товару Meat
+            var data =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                where xe.Parent.Parent.Element("Name").Value == "Meat"
+                select new
+                {
+                    Date = xe.Element("DateArrival").Value
+                };
+            PrintLINQ(data);
+
+
+                //5. Відортовані найменування продуктів
+            var sortedNameProduct =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                orderby (xe.Element("Name").Value)
+                select new 
+                {
+                    Name = xe.Element("Name").Value,
+                    NameProducer = xe.Element("Producer").Element("Name").Value,
+                    Country = xe.Element("Producer").Element("Country").Value
+                };
+            PrintLINQ(sortedNameProduct);
+
+
+            //6.  Найменування продуктів виробник яких починається на B відсортовані за алфавітом по виробнику і додатково за алфавітом назви продукту
+            var sortNameProduct =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                where (xe.Element("Producer").Element("Name").Value.ToUpper().StartsWith("B"))
+                orderby (xe.Element("Producer").Element("Name").Value)
+                orderby (xe.Element("Name").Value)
+                select new
+                {
+                    Name = xe.Element("Name").Value,
+                    NameProducer = xe.Element("Producer").Element("Name").Value,
+                    Country = xe.Element("Producer").Element("Country").Value
+                };
+            PrintLINQ(sortNameProduct);
+
+
+                //7. Перших два найменування товару
+            var twoFirstNameProducts =
+                 xmlDoc.Root.Elements("NameProduct")
+                .Take(2)
+                .Select (xmlDoc => new{
+                                Name = xmlDoc.Element("Name").Value,
+                                NameProducer = xmlDoc.Element("Producer").Element("Name").Value,
+                                Country = xmlDoc.Element("Producer").Element("Country").Value
+                         });
+            PrintLINQ(twoFirstNameProducts);
+
+
+                //8. Найбільша кількість в партії
+            var maxNumber =
+                 xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                 .Max(xe => Int32.Parse(xe.Element("Number").Value))
+                 ;
+            Console.WriteLine(maxNumber);
+
+
+                //9.Пропустити всі партії кількість в яких менше 15
+            var limitedProducts =
+                xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                .OrderBy(xe => Int32.Parse(xe.Element("Number").Value))
+                .SkipWhile(xe => Int32.Parse(xe.Element("Number").Value) < 15)
+                .Select(xmlDoc => new {
+                            Code = xmlDoc.Element("Code").Value,
+                            Price = Double.Parse(xmlDoc.Element("Price").Value, format),
+                            Number = Int32.Parse(xmlDoc.Element("Number").Value),
+                            Date = xmlDoc.Element("DateArrival").Value,
+                            Weight = Double.Parse(xmlDoc.Element("Weight").Value, format)
+                    });
+            PrintLINQ(limitedProducts);
+
+
+                //10. Партії продуктів вироблені виробником країна якаго співпадає з певним шаблоном
+            var specificProducer = 
+                xmlDoc.Root.Elements("NameProduct")
+                .Where(xe => Regex.IsMatch(xe.Element("Producer").Element("Country").Value, @"[Ss]p"))
+                .Select(xe => new {
+                                Name = xe.Element("Name").Value,
+                                NameProducer = xe.Element("Producer").Element("Name").Value,
+                                 Country = xe.Element("Producer").Element("Country").Value
+                        });
+            PrintLINQ(specificProducer);
+
+
+            //11. Кількість постачаємих товарів кожним виробником
+            var groupedProducer =
+                xmlDoc.Root.Elements("NameProduct")
+                .GroupBy(xe => xe.Element("Producer").Element("Name").Value)
+                .Select(xe => new { 
+                            Name = xe.Key,
+                            Count = xe.Count() 
+                        });
+                PrintLINQ(groupedProducer);
+
+
+            //12. Список партій кількість товарів в яких яких більше 5 і виробник шаблон B
+            var join =
+                from xe in xmlDoc.Root.Elements("NameProduct")
+                    .Elements("Products").Elements("Product")
+                where Int32.Parse(xe.Element("Number").Value) > 5
+                join a in xmlDoc.Root.Elements("NameProduct") 
+                    on xe.Parent.Parent.Element("Producer") equals a.Element("Producer")
+                where (a.Element("Producer").Element("Name").Value.ToUpper().StartsWith("B"))
+                select new { 
+                            Code = xe.Element("Code").Value,
+                            Number = xe.Element("Number").Value,
+                            Producer = a.Element("Producer").Element("Name").Value 
+                            
+                };
+            PrintLINQ(join);
+
+
+                //13 Обєднання списків партій 1- товарів ціна яких більше 200 і товарів кількість яких більше 15
+            var unitedlist = 
+            xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+            .Where(t => Double.Parse(t.Element("Price").Value, format) > 200)
+            .Union(
+                xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+                .Where(t => Int32.Parse(t.Element("Number").Value, format) > 15)
+                )
+            .Select(xe => new {
+                Code = xe.Element("Code").Value,
+                Price = xe.Element("Price").Value,
+                Number = xe.Element("Number").Value
+            });
+            PrintLINQ(unitedlist);
+
+
+                //14 Перетин списків партій 1- товарів ціна яких більше 200 і товарів кількість яких більше 15
+            var intersected =
+            xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+            .Where(t => Double.Parse(t.Element("Price").Value, format) > 200)
+            .Intersect(
+                xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+                .Where(t => Int32.Parse(t.Element("Number").Value, format) > 15)
+                )
+            .Select(xe => new {
+                Code = xe.Element("Code").Value,
+                Price = xe.Element("Price").Value,
+                Number = xe.Element("Number").Value
+            });
+            PrintLINQ(intersected);
+
+
+                //15 Різність списків (елементи першого набору яких нема в другому)
+                //партій товарів ціна яких більше 200 і товарів кількість яких більше 15
+            var excepted =
+            xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+            .Where(t => Double.Parse(t.Element("Price").Value, format) > 200)
+            .Except(
+                xmlDoc.Root.Elements("NameProduct").Elements("Products").Elements("Product")
+                .Where(t => Int32.Parse(t.Element("Number").Value, format) > 15)
+                )
+            .Select(xe => new {
+                Code = xe.Element("Code").Value,
+                Price = xe.Element("Price").Value,
+                Number = xe.Element("Number").Value
+            });
+            PrintLINQ(excepted);
+
+
+        }
+
+        private static void PrintLINQ<T>(IEnumerable<T> list)
+        {
+            Console.WriteLine("--------------------------");
+            foreach (T value in list)
+            {
+                Console.WriteLine(value);
+            }
+            Console.WriteLine();
         }
 
     }
