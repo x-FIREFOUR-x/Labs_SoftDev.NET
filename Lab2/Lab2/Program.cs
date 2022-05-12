@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Lab2
 {
@@ -44,8 +45,16 @@ namespace Lab2
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
 
+            XmlSerializer xmlSerializer = new XmlSerializer(Storage.GetType());
             using (XmlWriter writer = XmlWriter.Create("Storage.xml", settings))
             {
+                xmlSerializer.Serialize(writer, Storage);
+            }
+
+            #region xmlwriter
+            /*
+            using (XmlWriter writer = XmlWriter.Create("Storage1.xml", settings))
+            {      
                 writer.WriteStartElement("NameProducts");
                 foreach (NameProduct nameProd in Storage)
                 {
@@ -75,12 +84,14 @@ namespace Lab2
 
                     writer.WriteEndElement();
                 }
-                writer.WriteEndElement();
+                writer.WriteEndElement();   
             }
+            */
+            #endregion
 
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("users.xml");
+            doc.Load("Storage.xml");
 
         }
 

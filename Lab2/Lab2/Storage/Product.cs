@@ -1,6 +1,6 @@
 ﻿namespace Lab2
 {
-    class Product
+    public class Product
     {
         public string Code { get; set; }         // код товару
         public double Price { get; set; }        // ціна за одиницю

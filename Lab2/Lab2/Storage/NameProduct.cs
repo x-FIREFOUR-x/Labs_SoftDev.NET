@@ -2,11 +2,11 @@
 
 namespace Lab2
 {
-    class NameProduct
+    public class NameProduct
     {
         public string Name { get; set; }          // Найменування товару
         public Producer Producer { get; set; }    // Ім'я виробника
-        public ICollection<Product> Products { get; set; } = new List<Product>();       //партії товару 
+        public List<Product> Products { get; set; } = new List<Product>();       //партії товару 
 
         public override string ToString()
         {

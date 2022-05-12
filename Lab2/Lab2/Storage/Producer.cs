@@ -1,6 +1,6 @@
 ﻿namespace Lab2
 {
-    class Producer
+    public class Producer
     {
         public string Name { get; set; }       // ім'я виробника
         public string Country { get; set; }    //країна розташування виробника
