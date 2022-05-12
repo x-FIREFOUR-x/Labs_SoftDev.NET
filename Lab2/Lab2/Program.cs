@@ -97,6 +97,7 @@ namespace Lab2
 
             var format = new NumberFormatInfo() { NumberDecimalSeparator = ".", };
 
+            Console.WriteLine("\t" + "DataXmlFile" + "\n");
             foreach (XmlNode node in doc.DocumentElement)
             {
                 string name = node["Name"].InnerText;
@@ -126,7 +127,7 @@ namespace Lab2
 
 
 
-
+            Console.WriteLine("\n" + "\t" + "Linq Xml");
             XDocument xmlDoc = XDocument.Load("Storage.xml");
 
                 //1. Всі партії
@@ -141,7 +142,7 @@ namespace Lab2
                     Date = xe.Element("DateArrival").Value,
                     Weight = Double.Parse(xe.Element("Weight").Value, format)
                 };
-            PrintLINQ(products);
+            PrintLINQ(products, "1");
 
 
                 //2. Всі Партії найменування Meat
@@ -157,7 +158,7 @@ namespace Lab2
                     Date = xe.Element("DateArrival").Value,
                     Weight = Double.Parse(xe.Element("Weight").Value, format)
                 };
-                PrintLINQ(products2);
+                PrintLINQ(products2, "2");
 
 
                 //3. Партії ціни яких більше 150
@@ -173,7 +174,7 @@ namespace Lab2
                     Date = xe.Element("DateArrival").Value,
                     Weight = Double.Parse(xe.Element("Weight").Value, format)
                 };
-            PrintLINQ(items);
+            PrintLINQ(items, "3");
 
 
                 //4. Дати всіх партій найменування товару Meat
@@ -185,7 +186,7 @@ namespace Lab2
                 {
                     Date = xe.Element("DateArrival").Value
                 };
-            PrintLINQ(data);
+            PrintLINQ(data, "4");
 
 
                 //5. Відортовані найменування продуктів
@@ -198,7 +199,7 @@ namespace Lab2
                     NameProducer = xe.Element("Producer").Element("Name").Value,
                     Country = xe.Element("Producer").Element("Country").Value
                 };
-            PrintLINQ(sortedNameProduct);
+            PrintLINQ(sortedNameProduct, "5");
 
 
             //6.  Найменування продуктів виробник яких починається на B відсортовані за алфавітом по виробнику і додатково за алфавітом назви продукту
@@ -213,7 +214,7 @@ namespace Lab2
                     NameProducer = xe.Element("Producer").Element("Name").Value,
                     Country = xe.Element("Producer").Element("Country").Value
                 };
-            PrintLINQ(sortNameProduct);
+            PrintLINQ(sortNameProduct, "6");
 
 
                 //7. Перших два найменування товару
@@ -225,7 +226,7 @@ namespace Lab2
                                 NameProducer = xmlDoc.Element("Producer").Element("Name").Value,
                                 Country = xmlDoc.Element("Producer").Element("Country").Value
                          });
-            PrintLINQ(twoFirstNameProducts);
+            PrintLINQ(twoFirstNameProducts, "7");
 
 
                 //8. Найбільша кількість в партії
@@ -234,7 +235,8 @@ namespace Lab2
                     .Elements("Products").Elements("Product")
                  .Max(xe => Int32.Parse(xe.Element("Number").Value))
                  ;
-            Console.WriteLine(maxNumber);
+            Console.WriteLine("8--------------------------");
+            Console.WriteLine("MaxNumber= " + maxNumber + "\n");
 
 
                 //9.Пропустити всі партії кількість в яких менше 15
@@ -250,7 +252,7 @@ namespace Lab2
                             Date = xmlDoc.Element("DateArrival").Value,
                             Weight = Double.Parse(xmlDoc.Element("Weight").Value, format)
                     });
-            PrintLINQ(limitedProducts);
+            PrintLINQ(limitedProducts, "9");
 
 
                 //10. Партії продуктів вироблені виробником країна якаго співпадає з певним шаблоном
@@ -262,7 +264,7 @@ namespace Lab2
                                 NameProducer = xe.Element("Producer").Element("Name").Value,
                                  Country = xe.Element("Producer").Element("Country").Value
                         });
-            PrintLINQ(specificProducer);
+            PrintLINQ(specificProducer, "10");
 
 
             //11. Кількість постачаємих товарів кожним виробником
@@ -273,7 +275,7 @@ namespace Lab2
                             Name = xe.Key,
                             Count = xe.Count() 
                         });
-                PrintLINQ(groupedProducer);
+                PrintLINQ(groupedProducer, "11");
 
 
             //12. Список партій кількість товарів в яких яких більше 5 і виробник шаблон B
@@ -290,7 +292,7 @@ namespace Lab2
                             Producer = a.Element("Producer").Element("Name").Value 
                             
                 };
-            PrintLINQ(join);
+            PrintLINQ(join, "12");
 
 
                 //13 Обєднання списків партій 1- товарів ціна яких більше 200 і товарів кількість яких більше 15
@@ -306,7 +308,7 @@ namespace Lab2
                 Price = xe.Element("Price").Value,
                 Number = xe.Element("Number").Value
             });
-            PrintLINQ(unitedlist);
+            PrintLINQ(unitedlist, "13");
 
 
                 //14 Перетин списків партій 1- товарів ціна яких більше 200 і товарів кількість яких більше 15
@@ -322,7 +324,7 @@ namespace Lab2
                 Price = xe.Element("Price").Value,
                 Number = xe.Element("Number").Value
             });
-            PrintLINQ(intersected);
+            PrintLINQ(intersected, "14");
 
 
                 //15 Різність списків (елементи першого набору яких нема в другому)
@@ -339,13 +341,14 @@ namespace Lab2
                 Price = xe.Element("Price").Value,
                 Number = xe.Element("Number").Value
             });
-            PrintLINQ(excepted);
+            PrintLINQ(excepted, "15");
 
 
         }
 
-        private static void PrintLINQ<T>(IEnumerable<T> list)
+        private static void PrintLINQ<T>(IEnumerable<T> list, string numb = "")
         {
+            Console.Write(numb);
             Console.WriteLine("--------------------------");
             foreach (T value in list)
             {
