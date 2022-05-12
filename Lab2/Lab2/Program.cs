@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace Lab2
 {
@@ -93,6 +94,32 @@ namespace Lab2
             XmlDocument doc = new XmlDocument();
             doc.Load("Storage.xml");
 
+            foreach (XmlNode node in doc.DocumentElement)
+            {
+                string name = node["Name"].InnerText;
+
+                var producer = node["Producer"];
+                string nameProducer = producer["Name"].InnerText;
+                string countryProducer = producer["Country"].InnerText;
+
+                Console.WriteLine(string.Format("Name Product = {0}\nProducer = {1}, Country = {2}",
+                   name, nameProducer, countryProducer));
+
+                foreach(XmlNode pnode in node["Products"])
+                {
+                    var format = new NumberFormatInfo(){NumberDecimalSeparator = ".",};
+
+                    string code = pnode["Code"].InnerText;
+                    double price = Double.Parse(pnode["Price"].InnerText, format);
+                    int number = Int32.Parse(pnode["Number"].InnerText);
+                    string date = pnode["DateArrival"].InnerText;
+                    double weight = Double.Parse(pnode["Weight"].InnerText, format);
+
+                    Console.WriteLine(string.Format("\tCode = {0} Price = {1} Number = {2} Date = {3} Weight = {4}",
+                  code, price, number, date, weight));
+                }
+                Console.WriteLine();
+            }
         }
 
     }
