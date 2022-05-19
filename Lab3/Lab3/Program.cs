@@ -26,9 +26,10 @@ namespace Lab3
 
             Console.WriteLine();
             f3.addContent(f3.Clone());
+            D.copy("", "Folder", "");
             D.printTree();
 
-            D.delete("Folder\\Folder2", "Image");
+            D.delete("", "Folder");
             D.printTree();
 
 
