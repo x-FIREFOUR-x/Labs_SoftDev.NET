@@ -25,6 +25,18 @@ namespace Lab3
             D.printTree();
 
             Console.WriteLine();
+            D.copy("Folder", "Folder2", "Folder\\Folder2");
+            D.printTree();
+
+            D.delete("Folder", "Folder2");
+            D.printTree();
+
+            D.paste("", new Image("Image5", new List<List<string>>()));
+            D.printTree();
+
+
+            /*
+            Console.WriteLine();
             f3.addContent(f3.Clone());
             D.copy("", "Folder", "");
             D.printTree();
@@ -32,13 +44,9 @@ namespace Lab3
             D.delete("", "Folder");
             D.printTree();
 
-
-
-            /*Console.WriteLine();
-            f1.removeContent("Folder2");
-            D.printTree();*/
-
-
+            D.paste("", new Image("Image5", new List<List<string>>()));
+            D.printTree();
+            */
         }
     }
 }
