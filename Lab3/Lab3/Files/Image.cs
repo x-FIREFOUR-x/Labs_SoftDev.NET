@@ -6,7 +6,7 @@ namespace Lab3
 {
     class Image: Prototype
     {
-        List<List<string>> pixels;
+        private List<List<string>> pixels;
 
         // Constructor
         public Image(string name, List<List<string>> pixels)
@@ -18,6 +18,16 @@ namespace Lab3
         public override Prototype Clone()
         {
             return (Prototype)this.MemberwiseClone();
+        }
+
+        public override List<Prototype> Files()
+        {
+            return null;
+        }
+
+        public override string Format()
+        {
+            return ".png";
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Lab3
 {
     class TextFile : Prototype
     {
-        string text;
+        private string text;
 
         // Constructor
         public TextFile(string name, string text)
@@ -18,6 +18,16 @@ namespace Lab3
         public override Prototype Clone()
         {
             return (Prototype)this.MemberwiseClone();
+        }
+
+        public override List<Prototype> Files()
+        {
+            return null;
+        }
+
+        public override string Format()
+        {
+            return ".txt";
         }
     }
 }

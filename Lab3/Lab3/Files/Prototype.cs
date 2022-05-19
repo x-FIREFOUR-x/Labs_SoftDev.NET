@@ -23,5 +23,9 @@ namespace Lab3
             }
         }
         public abstract Prototype Clone();
+
+        public abstract List<Prototype> Files();
+
+        public abstract string Format();
     }
 }
