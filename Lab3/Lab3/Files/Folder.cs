@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Lab3
 {
@@ -15,17 +16,23 @@ namespace Lab3
         {
            
         }
+
         public Folder(string name, List<Prototype> files)
         : base(name)
         {
             this.files = files;
         }
 
-        
+        public Folder(Folder obj)
+        : base(obj.Name)
+        {
+            this.files = obj.files.Select(p => p.Clone()).ToList();
+        }
 
         public override Prototype Clone()
         {
-            return (Prototype)this.MemberwiseClone();
+            Folder cl = new Folder(this);
+            return cl;
         }
 
         public override List<Prototype> Files()

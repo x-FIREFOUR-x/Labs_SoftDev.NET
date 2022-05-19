@@ -15,9 +15,16 @@ namespace Lab3
             this.text = text;
         }
 
+        public TextFile(TextFile obj)
+        : base(obj.Name)
+        {
+            this.text = obj.text;
+        }
+
         public override Prototype Clone()
         {
-            return (Prototype)this.MemberwiseClone();
+            TextFile cl = new TextFile(this);
+            return cl;
         }
 
         public override List<Prototype> Files()

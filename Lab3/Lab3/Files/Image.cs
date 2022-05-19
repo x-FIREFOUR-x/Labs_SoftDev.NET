@@ -15,9 +15,16 @@ namespace Lab3
             this.pixels = pixels;
         }
 
+        public Image(Image obj)
+        : base(obj.Name)
+        {
+            pixels = new List<List<string>>(obj.pixels);
+        }
+
         public override Prototype Clone()
         {
-            return (Prototype)this.MemberwiseClone();
+            Image cl = new Image(this);
+            return cl;
         }
 
         public override List<Prototype> Files()
