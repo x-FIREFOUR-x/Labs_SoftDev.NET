@@ -23,6 +23,9 @@ namespace Lab3
 
             Provider D = new Provider(f3);
             D.printTree();
+
+            //f2.addContent(f3.Clone());
+            //D.printTree();
         }
     }
 }

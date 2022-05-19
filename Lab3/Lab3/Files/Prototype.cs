@@ -27,5 +27,8 @@ namespace Lab3
         public abstract List<Prototype> Files();
 
         public abstract string Format();
+
+        public virtual void addContent(Prototype file) { }
+        public virtual void removeContent(string name) { }
     }
 }

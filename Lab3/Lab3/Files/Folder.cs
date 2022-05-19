@@ -37,5 +37,23 @@ namespace Lab3
         {
             return "";
         }
+
+        public override void addContent(Prototype file)
+        {
+            files.Add(file);
+        }
+
+        public override void removeContent(string name)
+        {
+            int index = -1;
+            for (int i = 0; i < files.Count; i++)
+            {
+                if (files[i].Name == name)
+                    index = i;
+            }
+
+            if (index != -1)
+                files.RemoveAt(index);
+        }
     }
 }
