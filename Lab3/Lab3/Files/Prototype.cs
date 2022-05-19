@@ -6,7 +6,7 @@ namespace Lab3
 {
     abstract class Prototype
     {
-        private string name;
+       protected string name;
 
         // Constructor
         public Prototype(string name)

@@ -13,7 +13,6 @@ namespace Lab3
 
             Prototype i1 = new Image("Image", new List<List<string>>());
             
-            
 
             Prototype f1 = new Folder("Folder1", new List<Prototype>{t1, t2});
             Prototype f4 = new Folder("Folder4", new List<Prototype> {});
@@ -21,17 +20,23 @@ namespace Lab3
             Prototype f3 = new Folder("Folder", new List<Prototype> {f1, f2, t3});
 
 
+
             Provider D = new Provider(f3);
             D.printTree();
 
             Console.WriteLine();
-            f4.addContent(f3.Clone());
+            f3.addContent(f3.Clone());
+            D.printTree();
+
+            D.delete("Folder\\Folder2", "Image");
             D.printTree();
 
 
-            Console.WriteLine();
+
+            /*Console.WriteLine();
             f1.removeContent("Folder2");
-            D.printTree();
+            D.printTree();*/
+
 
         }
     }
