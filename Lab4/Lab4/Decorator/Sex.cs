@@ -28,5 +28,10 @@ namespace Lab4
                 calories = 1;
             return (this.character.CalculateCalories() * calories);
         }
+
+        public override string Description()
+        {
+            return (this.character.Description() + ", Sex: " + sex.ToString());
+        }
     }
 }

@@ -24,5 +24,10 @@ namespace Lab4
             return calories;
         }
 
+        public string Description()
+        {
+            return ("Height: " + height + ", Width: " + weight + ", Age: "+ age );
+        }
+
     }
 }

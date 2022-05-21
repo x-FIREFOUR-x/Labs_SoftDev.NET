@@ -17,5 +17,10 @@ namespace Lab4
             return character.CalculateCalories();
         }
 
+        public virtual string Description()
+        {
+            return character.Description();
+        }
+
     }
 }

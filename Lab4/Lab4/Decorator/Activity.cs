@@ -42,5 +42,10 @@ namespace Lab4
 
             return this.character.CalculateCalories() * calories;
         }
+
+        public override string Description()
+        {
+            return (this.character.Description() + ", Level activity: " + activity.ToString());
+        }
     }
 }
