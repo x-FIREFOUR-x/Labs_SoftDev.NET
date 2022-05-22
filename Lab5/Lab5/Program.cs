@@ -6,7 +6,20 @@ namespace Lab5
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Complex z1 = new Complex(3, -2);
+            Complex z2 = new Complex(-1, 4);
+            Complex z = z1 + z2;
+            Console.WriteLine(z.ToString());
+            z = z1 - z2;
+            Console.WriteLine(z.ToString());
+            z = z1 * z2;
+            Console.WriteLine(z.ToString());
+            z = z1 / z2;
+            Console.WriteLine(z.ToString());
+
+            z = (z1 + z2) * (z1 - z2);
+            Console.WriteLine(z.ToString());
+
         }
     }
 }
