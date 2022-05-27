@@ -6,21 +6,6 @@ namespace Lab5
     {
         static void Main(string[] args)
         {
-             /*
-             Complex z1 = new Complex(3, -2);
-             Complex z2 = new Complex(-1, 4);
-             Complex z = z1 + z2;
-             Console.WriteLine(z.ToString());
-             z = z1 - z2;
-             Console.WriteLine(z.ToString());
-             z = z1 * z2;
-             Console.WriteLine(z.ToString());
-             z = z1 / z2;
-             Console.WriteLine(z.ToString());
-
-             z = (z1 + z2) * (z1 - z2);
-             Console.WriteLine(z.ToString());
-             */
 
             Context context = new Context();
             Complex x = new Complex(3, -2);
@@ -39,8 +24,17 @@ namespace Lab5
              );
 
             Complex result = expression.Interpret(context);
-            Console.WriteLine( result.ToString());
+            Console.WriteLine( result.ToBool().ToString());
 
+            Expression expression2 = new SubExpression(
+                new AddExpression(
+                    new TerminalExpression("x"), new TerminalExpression("y")
+                ),
+                new TerminalExpression("z")
+             );
+
+            Complex result2 = expression.Interpret(context);
+            Console.WriteLine(result2.ToString());
 
         }
     }

@@ -69,5 +69,13 @@ namespace Lab5
             return (this.Re).ToString() +  sign + (this.Im).ToString() + "i";
         }
 
+        public  bool ToBool()
+        {
+            if (Im >= 0)
+                return true;
+            else
+                return false;
+        }
+
     }
 }
