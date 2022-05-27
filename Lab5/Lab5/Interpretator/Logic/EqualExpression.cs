@@ -4,19 +4,22 @@ using System.Text;
 
 namespace Lab5
 {
-    class DivExpression: Expression
+    class EqualExpression : Expression
     {
         Expression leftExpression;
         Expression rightExpression;
 
-        public DivExpression(Expression left, Expression right)
+        public EqualExpression(Expression left, Expression right)
         {
             leftExpression = left;
             rightExpression = right;
         }
         public Complex Interpret(Context context)
         {
-            return leftExpression.Interpret(context) / rightExpression.Interpret(context);
+            if (leftExpression.Interpret(context) == rightExpression.Interpret(context))
+                return new Complex(1, 1);
+            else
+                return new Complex(-1, -1);
         }
     }
 }

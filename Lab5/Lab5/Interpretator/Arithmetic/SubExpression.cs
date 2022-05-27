@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lab5.Arithmetic
+namespace Lab5
 {
     class SubExpression : Expression
     {

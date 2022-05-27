@@ -31,11 +31,11 @@ namespace Lab5
             context.SetVariable("y", y);
             context.SetVariable("z", z);
 
-            Expression expression = new Lab5.Arithmetic.SubExpression(
-                new Lab5.Arithmetic.AddExpression(
-                    new Lab5.Arithmetic.TerminalExpression("x"), new Lab5.Arithmetic.TerminalExpression("y")
+            Expression expression = new NotEqualExpression(
+                new AddExpression(
+                    new TerminalExpression("x"), new TerminalExpression("y")
                 ),
-                new Lab5.Arithmetic.TerminalExpression("z")
+                new TerminalExpression("z")
              );
 
             Complex result = expression.Interpret(context);
